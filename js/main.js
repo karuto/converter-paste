@@ -1,4 +1,5 @@
 (function() {
+    var options = {};
     var currencies = new Array();
     var baseCurrency = 'GBP';
     var targetCurrency = 'USD';
@@ -58,7 +59,13 @@
     function setOutput(currencies, rate, textareaId) {
         var output = '';
         currencies.forEach(function(currency) {
-            output += (currency * rate) + '\n';
+            var line;
+            if (options.decimals > -1) {
+                line = (currency * rate).toFixed(options.decimals);
+            } else {
+                line = (currency * rate);
+            }
+            output += line + '\n';
         });
         $(textareaId).val(output);
     }
@@ -69,12 +76,14 @@
         }
     }
 
-    function prepare() {
+    function getOptions() {
         resetCurrencies();
+        options.decimals = parseInt($('#select_decimals').val());
+        console.log('### options =', options);
     }
 
     $('#action').click(function() {
-        prepare();
+        getOptions();
         getCurrenciesFromText('textarea#input');
         getExchangeRate(baseCurrency, targetCurrency);
     });
