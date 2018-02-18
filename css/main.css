@@ -97,11 +97,37 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+body {
+    max-width: 960px;
+    margin: 48px auto;
+    padding: 0 16px;
+}
 
+.tilte {
+    margin: 0 0 32px;
+}
 
+.options {
+    display: flex;
+    margin: 0 0 32px;
+}
 
+.option {
+    margin: 0 32px 0 0;
+}
 
+.option-heading {
 
+}
+
+.textareas {
+    margin: 0 0 32px;
+}
+
+.button {
+    display: block;
+    margin: 16px 0;
+}
 
 
 
