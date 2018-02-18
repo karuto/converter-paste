@@ -1,32 +1,31 @@
 (function() {
     var options = {};
     var currencies = new Array();
-    var baseCurrency = 'GBP';
-    var targetCurrency = 'USD';
 
-    function getExchangeRate(baseCurrency, targetCurrency) {
-        if (!(baseCurrency && targetCurrency)) {
+    function getExchangeRate() {
+        if (!(options.base && options.target)) {
             log('err');
         }
 
         var exchangeUrl =
-            'https://api.fixer.io/latest?base=' + baseCurrency +
-            '&symbols=' + targetCurrency;
+            'https://api.fixer.io/latest?base=' + options.base +
+            '&symbols=' + options.target;
 
         log(exchangeUrl);
-        getData(exchangeUrl, targetCurrency);
+        getData(exchangeUrl);
     }
 
     function handleData(data) {
         if (data.rates) {
-            console.log('inside callback', data.rates[targetCurrency]);
-            var rate = data.rates[targetCurrency];
+            console.log('inside callback', data.rates[options.target]);
+            var rate = data.rates[options.target];
             $('body').trigger('rateConfirmed', rate);
+            return;
         }
         console.error('Call to remote currency exchange API succeed, but no rates data found.');
     }
 
-    function getData(url, targetCurrency) {
+    function getData(url) {
         $.ajax({
             url: url,
             type: 'GET',
@@ -70,22 +69,25 @@
         $(textareaId).val(output);
     }
 
-    function resetCurrencies() {
+    function resetState() {
         if (currencies.length > 0) {
             currencies = new Array();
         }
+        options = {};
     }
 
     function getOptions() {
-        resetCurrencies();
-        options.decimals = parseInt($('#select_decimals').val());
+        resetState();
+        options.decimals = parseInt($('#options_decimals').val());
+        options.base = $('#options_base').val();
+        options.target = $('#options_target').val();
         console.log('### options =', options);
     }
 
     $('#action').click(function() {
         getOptions();
         getCurrenciesFromText('textarea#input');
-        getExchangeRate(baseCurrency, targetCurrency);
+        getExchangeRate();
     });
 
     $('body').on('rateConfirmed', function(event, rate) {
