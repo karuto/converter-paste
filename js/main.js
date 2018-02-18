@@ -49,9 +49,7 @@
         var words = $(textareaId).val().split(/[ ,]+/);
         words.forEach(function(word) {
             if (isNumeric(word)) {
-                console.log(currencies, word);
-                // DEBUG, WHY currencies ARE EMPTY?
-                currencies.push[word]; // convert to number
+                currencies.push(+word); // convert to number
             }
         });
         console.log('### getCurrenciesFromText =', currencies);
@@ -59,12 +57,10 @@
 
     function setOutput(currencies, rate, textareaId) {
         var output = '';
-        console.log('setOutput =', currencies, rate);
         currencies.forEach(function(currency) {
             output += (currency * rate) + '\n';
         });
         $(textareaId).val(output);
-        resetCurrencies();
     }
 
     function resetCurrencies() {
@@ -73,9 +69,14 @@
         }
     }
 
+    function prepare() {
+        resetCurrencies();
+    }
+
     $('#action').click(function() {
+        prepare();
         getCurrenciesFromText('textarea#input');
-        // getExchangeRate(baseCurrency, targetCurrency);
+        getExchangeRate(baseCurrency, targetCurrency);
     });
 
     $('body').on('rateConfirmed', function(event, rate) {
