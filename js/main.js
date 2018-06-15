@@ -8,7 +8,7 @@
         }
 
         var exchangeUrl =
-            'https://api.fixer.io/latest?base=' + options.base +
+            'https://exchangeratesapi.io/api/latest?base=' + options.base +
             '&symbols=' + options.target;
 
         log(exchangeUrl);
