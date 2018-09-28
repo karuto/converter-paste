@@ -47,14 +47,19 @@
     }
 
     function getCurrenciesFromText(textareaId) {
+        // remove return characters
+        https://stackoverflow.com/questions/21572938/what-is-the-character-in-chrome-console
+        var words = $(textareaId).val().replace(/(\r\n|\n|\r)/gm, ",");
+
         // Split text by whitespace or comma
-        var words = $(textareaId).val().split(/[ ,]+/);
+        words = words.split(/[ ,]+/);
+
         words.forEach(function(word) {
             if (isNumeric(word)) {
                 currencies.push(+word); // convert to number
             }
         });
-        console.log('### getCurrenciesFromText =', currencies);
+        log(currencies);
     }
 
     function setOutput(currencies, rate, textareaId) {
@@ -83,7 +88,7 @@
         options.decimals = parseInt($('#options_decimals').val());
         options.base = $('#options_base').val();
         options.target = $('#options_target').val();
-        console.log('### options =', options);
+        log(options);
     }
 
     $('#action').click(function() {
@@ -96,5 +101,3 @@
         setOutput(currencies, rate, 'textarea#output');
     });
 }());
-
-// Place any jQuery/helper plugins in here.
