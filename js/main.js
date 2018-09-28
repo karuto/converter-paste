@@ -8,17 +8,19 @@
         }
 
         var exchangeUrl =
-            'https://exchangeratesapi.io/api/latest?base=' + options.base +
-            '&symbols=' + options.target;
+            'http://free.currencyconverterapi.com/api/v5/convert?compact=y&q=' + options.base +
+            '_' + options.target;
 
         log(exchangeUrl);
         getData(exchangeUrl);
     }
 
     function handleData(data) {
-        if (data.rates) {
-            console.log('inside callback', data.rates[options.target]);
-            var rate = data.rates[options.target];
+        var key = options.base + '_' + options.target;
+
+        if (data[key]) {
+            console.log('inside callback', data[key].val);
+            var rate = data[key].val;
             $('body').trigger('rateConfirmed', rate);
             return;
         }
